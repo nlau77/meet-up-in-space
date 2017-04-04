@@ -1,1 +1,9 @@
 <h1>Meetups</h1>
+
+<ul>
+  <% @meetups.each do |meetup| %>
+    <li>
+      <%= meetup.name %>
+    </li>
+  <% end %>
+</ul>

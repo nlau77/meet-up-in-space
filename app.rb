@@ -1,5 +1,6 @@
 require 'sinatra'
 require_relative 'config/application'
+require 'pry'
 
 set :bind, '0.0.0.0'  # bind to all interfaces
 
@@ -33,5 +34,9 @@ get '/sign_out' do
 end
 
 get '/meetups' do
+  @meetups = Meetup.all.sort_by {|meetup| meetup.name}
+
+  binding.pry
+
   erb :'meetups/index'
 end
