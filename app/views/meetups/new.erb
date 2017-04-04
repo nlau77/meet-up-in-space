@@ -1,0 +1,17 @@
+<% if flash.any? %>
+  <div class="flash">
+    <div class="container">
+      <%= flash[:notice] %>
+    </div>
+  </div>
+<% end %>
+
+<form method="post" action='/new_meetup'>
+  <label for="meetup_name">Meetup Name</label>
+  <input type="text" name="meetup_name" value="">
+  <label for="meetup_location">Meetup Location</label>
+  <input type="text" name="meetup_location" value="">
+  <label for="meetup_description">Description</label>
+  <input type="text" name="meetup_description" value="">
+  <input class="submit_button" type="submit" name="submit" value="submit">
+</form>

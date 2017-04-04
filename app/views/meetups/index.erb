@@ -3,7 +3,7 @@
 <ul>
   <% @meetups.each do |meetup| %>
     <li>
-      <%= meetup.name %>
+      <a href='<%= "/meetups/#{meetup.id}" %>'><%= meetup.name %></a>
     </li>
   <% end %>
 </ul>

@@ -36,7 +36,44 @@ end
 get '/meetups' do
   @meetups = Meetup.all.sort_by {|meetup| meetup.name}
 
-  binding.pry
-
   erb :'meetups/index'
+end
+
+get '/meetups/:id' do
+  meetup_id = params["id"]
+  @meetup = Meetup.find_by(id: meetup_id)
+  user_id= @meetup.created_by
+  @username= User.find_by(id: user_id)
+
+  erb :'meetups/show'
+end
+
+get '/new_meetup' do
+  if current_user.nil?
+    flash[:notice] = "You must be signed in to create a new meetup."
+    redirect "/"
+  end
+  erb :'meetups/new'
+end
+
+post '/new_meetup' do
+  meetup_name = params["meetup_name"]
+  meetup_location = params["meetup_location"]
+  meetup_description = params["meetup_description"]
+  user_id = current_user.id
+  user_uid = current_user.uid.to_i
+  details = {created_by: user_id,
+    created_by_uid: user_uid,
+    name: meetup_name,
+    description: meetup_description,
+    location: meetup_location
+  }
+  new_meetup = Meetup.new(details)
+  if new_meetup.has_errors?
+    flash[:errors] = new_meetup.error_message
+  else
+    new_meetup.save
+  end
+  new_meetup_id = Meetup.last.id
+  redirect "/meetups/#{new_meetup_id}"
 end
