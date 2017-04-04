@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Meetups</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/normalize.css" />
+    <link rel="stylesheet" href="/stylesheets/app.css" />
+  </head>
+  <body>
+
+    <div class="top-bar">
+      <div class="container">
+        <a class="logo" href="/">Meetups in Space</a>
+
+        <ul class="top-bar-section">
+          <% if current_user %>
+            <li>Signed in as <%= current_user.username %></a></li>
+            <li><a href="/sign_out">Sign Out</a></li>
+          <% else %>
+            <li><a href="/auth/github">Sign In</a></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+
+    <% if flash.any? %>
+      <div class="flash">
+        <div class="container">
+          <%= flash[:notice] %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="container">
+      <%= yield %>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script src="/javascripts/app.js"></script>
+  </body>
+</html>
