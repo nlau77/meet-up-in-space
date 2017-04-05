@@ -44,8 +44,17 @@ get '/meetups/:id' do
   @meetup = Meetup.find_by(id: meetup_id)
   user_id= @meetup.owner_id
   @username= User.find_by(id: user_id)
-
+  @meetup_id = meetup_id
   erb :'meetups/show'
+end
+
+post '/meetups/:id' do
+  binding.pry
+  meetup_id = params[:id].to_i
+  user_id = current_user.id
+  MeetupsUser.create(meetup_id: meetup_id, user_id: user_id)
+  flash[:notice] = "You have joined the #{Meetup.find_by(id: meetup_id).name}! Yay"
+  redirect "/meetups/#{meetup_id}"
 end
 
 get '/new_meetup' do
@@ -60,8 +69,8 @@ post '/new_meetup' do
   meetup_name = params["meetup_name"]
   meetup_location = params["meetup_location"]
   meetup_description = params["meetup_description"]
-  user_id = current_user.id
-  details = {owner_id: user_id,
+  user = current_user
+  details = {owner: user,
     name: meetup_name,
     description: meetup_description,
     location: meetup_location
@@ -75,4 +84,11 @@ post '/new_meetup' do
   new_meetup.save
   new_meetup_id = Meetup.last.id
   redirect "/meetups/#{new_meetup_id}"
+end
+
+get '/user/:username' do
+  username = params["username"]
+  @created_meetups = User.find_by(username: username).creations
+  @joined_meetups = User.find_by(username: username).meetups
+  erb :'meetups/userpage'
 end
