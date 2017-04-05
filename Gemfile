@@ -7,6 +7,7 @@ gem 'rake'
 gem 'sinatra'
 gem 'sinatra-activerecord', '2.0.9'
 gem 'sinatra-flash'
+gem 'faker'
 
 group :development, :test do
   gem 'capybara'

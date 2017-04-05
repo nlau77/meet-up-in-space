@@ -1,14 +1,22 @@
 class Meetup < ActiveRecord::Base
-  has_and_belongs_to_many :users
+  has_many :meetups_users
+  has_many :users,
+  through: :meetups_users
+  # belongs_to :creator, class_name: "User"
 
-  def has_errors?
-    if self.name == "" || self.location == "" || self.description == ""
-      return true
-    end
-    false
-  end
+validates :name, presence: true
+validates :name, length: { minimum: 1 }
 
-  # def error_message
-  #   return some errors and stuff
-  # end
+validates :description, presence: true
+validates :description, length: { minimum: 5, maximum: 1000 }
+
+validates :location, presence: true
+validates :location, length: { minimum: 1, maximum: 100 }
+
+validates :owner_id, presence: true
+validates :owner_id, numericality: true
+
+
+
+
 end

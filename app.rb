@@ -42,7 +42,7 @@ end
 get '/meetups/:id' do
   meetup_id = params["id"]
   @meetup = Meetup.find_by(id: meetup_id)
-  user_id= @meetup.created_by
+  user_id= @meetup.owner_id
   @username= User.find_by(id: user_id)
 
   erb :'meetups/show'
@@ -61,19 +61,18 @@ post '/new_meetup' do
   meetup_location = params["meetup_location"]
   meetup_description = params["meetup_description"]
   user_id = current_user.id
-  user_uid = current_user.uid.to_i
-  details = {created_by: user_id,
-    created_by_uid: user_uid,
+  details = {owner_id: user_id,
     name: meetup_name,
     description: meetup_description,
     location: meetup_location
   }
   new_meetup = Meetup.new(details)
-  if new_meetup.has_errors?
-    flash[:errors] = new_meetup.error_message
-  else
-    new_meetup.save
-  end
+  # if new_meetup.has_errors?
+  #   flash[:errors] = new_meetup.error_message
+  # else
+  #   new_meetup.save
+  # end
+  new_meetup.save
   new_meetup_id = Meetup.last.id
   redirect "/meetups/#{new_meetup_id}"
 end

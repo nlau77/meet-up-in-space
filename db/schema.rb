@@ -11,19 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170404163754) do
+ActiveRecord::Schema.define(version: 20170405163814) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "meetups", force: :cascade do |t|
-    t.integer  "created_by",     null: false
-    t.integer  "created_by_uid", null: false
-    t.string   "name",           null: false
-    t.text     "description",    null: false
-    t.string   "location",       null: false
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.string   "name",        null: false
+    t.text     "description", null: false
+    t.string   "location",    null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "owner_id",    null: false
   end
 
   create_table "meetups_users", force: :cascade do |t|

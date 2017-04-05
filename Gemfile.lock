@@ -31,6 +31,8 @@ GEM
     dotenv (2.2.0)
     factory_girl (4.8.0)
       activesupport (>= 3.0.0)
+    faker (1.7.2)
+      i18n (~> 0.5)
     faraday (0.11.0)
       multipart-post (>= 1.2, < 3)
     hashie (3.5.5)
@@ -122,6 +124,7 @@ DEPENDENCIES
   database_cleaner
   dotenv
   factory_girl
+  faker
   launchy
   omniauth-github
   pg
