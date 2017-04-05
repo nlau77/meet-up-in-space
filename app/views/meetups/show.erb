@@ -1,5 +1,18 @@
+<span><a href='/'>Back</a></span>
 <h1>Event Name: <%= @meetup.name %></h1>
 <h2>Description: <%= @meetup.description %> </h2>
 <h2>Location: <%= @meetup.location %> </h2>
 <h3>Creator: <%= @username.username %> </h3>
-<span><a href='/'>Back</a></span>
+
+<form class="whatever" action='<%="/meetups/#{@meetup.id}"%>' method="post">
+  <button class="submit_button" type="submit" name="submit">Join Us!</button>
+</form>
+
+
+<h1>Cool people who have already joined</h1>
+<% binding.pry %>
+<ul>
+  <% @meetup.users.each do |user| %>
+    <li><%=user.username%></li>
+  <% end %>
+</ul>

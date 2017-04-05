@@ -2,6 +2,13 @@ class User < ActiveRecord::Base
   has_many :meetups_users
   has_many :meetups,
   through: :meetups_users
+  has_many :creations, class_name: "Meetup", foreign_key: "owner_id"
+
+  validates :provider, presence: true
+  validates :uid, presence: true
+  validates :username, presence: true
+  validates :email, presence: true
+  validates :avatar_url, presence: true
 
   def self.find_or_create_from_omniauth(auth)
     provider = auth.provider
@@ -16,12 +23,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  validates :provider, presence: true
-  validates :uid, presence: true
-  validates :username, presence: true
-  validates :email, presence: true
-  validates :avatar_url, presence: true
-
-
-
+  # def creations
+  #   Meetup.where(owner: self)
+  # end
 end

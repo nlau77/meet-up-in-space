@@ -17,6 +17,7 @@
           <% if current_user %>
             <li>Signed in as <%= current_user.username %></a></li>
             <li><a href="/new_meetup">New Meetup</a></li>
+            <li><a href='<%= "/user/#{current_user.username}"%>'>My Meetups</a></li>
             <li><a href="/sign_out">Sign Out</a></li>
           <% else %>
             <li><a href="/auth/github">Sign In</a></li>
