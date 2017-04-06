@@ -49,12 +49,16 @@ get '/meetups/:id' do
 end
 
 post '/meetups/:id' do
-  binding.pry
   meetup_id = params[:id].to_i
-  user_id = current_user.id
-  MeetupsUser.create(meetup_id: meetup_id, user_id: user_id)
-  flash[:notice] = "You have joined the #{Meetup.find_by(id: meetup_id).name}! Yay"
-  redirect "/meetups/#{meetup_id}"
+  if current_user
+    user_id = current_user.id
+    MeetupsUser.create(meetup_id: meetup_id, user_id: user_id)
+    flash[:notice] = "You have joined the #{Meetup.find_by(id: meetup_id).name}! Yay"
+    redirect "/meetups/#{meetup_id}"
+  else
+    flash[:notice] = "You need to be logged in to join #{Meetup.find_by(id: meetup_id).name}!"
+    redirect "/meetups/#{meetup_id}"
+  end
 end
 
 get '/new_meetup' do
@@ -62,6 +66,7 @@ get '/new_meetup' do
     flash[:notice] = "You must be signed in to create a new meetup."
     redirect "/"
   end
+  @post_info = {}
   erb :'meetups/new'
 end
 
@@ -76,14 +81,15 @@ post '/new_meetup' do
     location: meetup_location
   }
   new_meetup = Meetup.new(details)
-  # if new_meetup.has_errors?
-  #   flash[:errors] = new_meetup.error_message
-  # else
-  #   new_meetup.save
-  # end
   new_meetup.save
-  new_meetup_id = Meetup.last.id
-  redirect "/meetups/#{new_meetup_id}"
+    if new_meetup.errors.messages.empty?
+      new_meetup_id = Meetup.last.id
+      redirect "/meetups/#{new_meetup_id}"
+    else
+      @errors= new_meetup.errors
+      @post_info = params
+      erb :'meetups/new'
+    end
 end
 
 get '/user/:username' do
@@ -91,4 +97,42 @@ get '/user/:username' do
   @created_meetups = User.find_by(username: username).creations
   @joined_meetups = User.find_by(username: username).meetups
   erb :'meetups/userpage'
+end
+
+
+post '/edit' do
+  meetup_id= params["meetup_id"].to_i
+  @meetup= Meetup.find_by(id: meetup_id)
+  erb :'meetups/edit'
+
+end
+
+post '/edit_meetup' do
+  meetup_name = params["meetup_name"]
+  meetup_location = params["meetup_location"]
+  meetup_description = params["meetup_description"]
+  meetup_id = params["meetup_id"].to_i
+  user = current_user
+
+  update_meetup = Meetup.find_by(id: meetup_id)
+  update_meetup.update_attributes(:name => meetup_name, :description => meetup_description, :location => meetup_location)
+    if update_meetup.errors.messages.empty?
+
+      redirect "/meetups/#{meetup_id}"
+    else
+      @errors= update_meetup.errors
+      @post_info = params
+      erb :'meetups/new'
+    end
+
+end
+
+post '/delete' do
+
+  meetup_id = params["meetup_id"].to_i
+  MeetupsUser.where(meetup_id: meetup_id).destroy_all
+  Meetup.find(meetup_id).destroy
+  flash[:notice] = "You have deleted the event!"
+
+  redirect '/'
 end

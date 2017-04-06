@@ -1,0 +1,13 @@
+<h1>Edit You Event</h1>
+
+
+<form method="post" action='/edit_meetup'>
+  <label for="meetup_name">Meetup Name</label>
+  <input type="text" name="meetup_name" value="<%=@meetup.name%>">
+  <label for="meetup_location">Meetup Location</label>
+  <input type="text" name="meetup_location" value="<%=@meetup.location%>">
+  <label for="meetup_description">Description</label>
+  <input type="text" name="meetup_description" value="<%=@meetup.description%>">
+  <input class="submit_button" type="submit" name="submit" value="submit">
+  <input type="hidden" name="meetup_id" value= "<%=@meetup.id%>"/>
+</form>

@@ -13,20 +13,20 @@ require 'faker'
 # ]
 
 User.delete_all
-3.times do
+20.times do
   new_user = {provider: "github", uid: Faker::Number.number(6), username: Faker::Pokemon.name, email: Faker::Internet.email, avatar_url: Faker::Avatar.image}
   User.create(new_user)
 end
 
 
 Meetup.delete_all
-3.times do
+300.times do
   new_meetup = {owner_id: User.all.sample.id, name: Faker::Space.planet, description: Faker::Lorem.sentences(2), location: Faker::Space.galaxy}
   Meetup.create(new_meetup)
 end
 
 MeetupsUser.delete_all
-5.times do
+10000.times do
   meetup = Meetup.all.sample
   user_id = User.all.sample.id
   while meetup.owner_id == user_id

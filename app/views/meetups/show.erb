@@ -2,17 +2,31 @@
 <h1>Event Name: <%= @meetup.name %></h1>
 <h2>Description: <%= @meetup.description %> </h2>
 <h2>Location: <%= @meetup.location %> </h2>
-<h3>Creator: <%= @username.username %> </h3>
+<h3>Creator: <%= @username.username %><img src='<%= @username.avatar_url%>' height=30em width=30em/></h3>
+
 
 <form class="whatever" action='<%="/meetups/#{@meetup.id}"%>' method="post">
   <button class="submit_button" type="submit" name="submit">Join Us!</button>
 </form>
 
+<% if current_user && current_user.id == @meetup.owner.id  %>
+  <form class="" action="/edit" method="post">
+    <input type=hidden name='meetup_id' value=<%= "#{@meetup.id}"%> />
+    <button type='submit' action='/'>Edit page </button>
+  </form>
+  
+  <form class="" action="/delete" method="post">
+    <input type=hidden name='meetup_id' value=<%= "#{@meetup.id}"%> />
+    <button type='submit' action='/'>Delete This Event </button>
+  </form>
+<% end %>
 
 <h1>Cool people who have already joined</h1>
-<% binding.pry %>
-<ul>
-  <% @meetup.users.each do |user| %>
-    <li><%=user.username%></li>
-  <% end %>
-</ul>
+  <ul>
+    <% @meetup.users.each do |user| %>
+      <li>
+        <img src='<%= user.avatar_url%>' height=30em width=30em/>
+        <%=user.username%>
+      </li>
+    <% end %>
+  </ul>

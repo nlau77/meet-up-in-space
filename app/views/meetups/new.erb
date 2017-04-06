@@ -8,10 +8,21 @@
 
 <form method="post" action='/new_meetup'>
   <label for="meetup_name">Meetup Name</label>
-  <input type="text" name="meetup_name" value="">
+  <input type="text" name="meetup_name" value="<%=@post_info['meetup_name'] %>">
   <label for="meetup_location">Meetup Location</label>
-  <input type="text" name="meetup_location" value="">
+  <input type="text" name="meetup_location" value="<%=@post_info['meetup_location'] %>">
   <label for="meetup_description">Description</label>
-  <input type="text" name="meetup_description" value="">
+  <input type="text" name="meetup_description" value="<%=@post_info['meetup_description'] %>">
   <input class="submit_button" type="submit" name="submit" value="submit">
 </form>
+
+
+<div>
+  <ul>
+    <% if !@errors.nil? %>
+      <% @errors.full_messages.each do |sentence| %>
+        <li><%= sentence %></li>
+      <% end %>
+    <% end %>
+  </ul>
+</div>

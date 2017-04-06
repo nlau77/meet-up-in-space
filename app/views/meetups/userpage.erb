@@ -1,6 +1,7 @@
 <h1>Created Meetups</h1>
 <% @created_meetups.each do |meetup| %>
-  <h1>Event Name: <%= meetup.name %></h1>
+
+  <h1>Event Name: <a href='<%="/meetups/#{meetup.id}"%>'><%= meetup.name %></a></h1>
   <h2>Description: <%= meetup.description %> </h2>
   <h2>Location: <%= meetup.location %> </h2>
 <% end %>
